@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="greeting">XML 导入</h3>
+
+{% if error %}
+<div class="error-msg">{{ error }}</div>
+{% endif %}
+
+<div class="card">
+    <h2 class="card-title">安全 XML 导入</h2>
+    <form method="POST" action="{{ url_for('xml_import') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label class="form-label">请输入 XML 数据（最大 100KB）</label>
+            <textarea class="form-input" name="xml_data" rows="12"
+                      placeholder="&lt;root&gt;&#10;    &lt;user&gt;&#10;        &lt;name&gt;张三&lt;/name&gt;&#10;        &lt;email&gt;zhangsan@example.com&lt;/email&gt;&#10;    &lt;/user&gt;&#10;&lt;/root&gt;"
+                      style="font-family: monospace; width: 100%;" required></textarea>
+        </div>
+        <button class="btn" type="submit">解析 XML</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="card">
+    <h2 class="card-title">解析结果</h2>
+    <pre class="xml-result">{{ result }}</pre>
+</div>
+{% endif %}
+
+{% endblock %}

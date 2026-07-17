@@ -1,0 +1,282 @@
+/* ============================================================
+   style.css - 用户管理系统样式
+   样式文件无安全漏洞，保持不变
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 0 24px;
+    height: 56px;
+}
+
+.nav-brand {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-brand:hover {
+    opacity: 0.85;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-welcome {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+/* 退出的POST表单按钮 — 外观与导航链接一致 */
+.logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-btn-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 0 16px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-size: 22px;
+    margin-bottom: 24px;
+    color: #333;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: #667eea;
+}
+
+.btn {
+    display: inline-block;
+    background: #667eea;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    margin-top: 8px;
+}
+
+.btn:hover {
+    background: #5a6fd6;
+}
+
+.error-msg {
+    background: #fff0f0;
+    color: #d63031;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.info-text {
+    color: #666;
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+.user-info-list {
+    list-style: none;
+    margin-bottom: 24px;
+}
+
+.user-info-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+    color: #333;
+}
+
+.user-info-list li:last-child {
+    border-bottom: none;
+}
+
+.user-info-list li strong {
+    display: inline-block;
+    width: 80px;
+    color: #555;
+}
+
+/* ======== 功能新增样式 ======== */
+
+/* 问候语 */
+.greeting {
+    text-align: center;
+    color: #555;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* 操作按钮组 */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* 次要按钮（灰色） */
+.btn-secondary {
+    background: #95a5a6;
+}
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+/* 成功提示 */
+.success-msg {
+    background: #f0fff4;
+    color: #27ae60;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border: 1px solid #c6f6d5;
+}
+
+/* 密码规则提示 */
+.password-hint {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* 表单字段注释 */
+.form-note {
+    display: block;
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* 禁用输入框 */
+.form-input:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* ======== 搜索与数据表格 ======== */
+
+.search-results {
+    margin-top: 24px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table thead {
+    background: #667eea;
+    color: #fff;
+}
+
+.data-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.data-table tbody tr:hover {
+    background: #f8f9ff;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}

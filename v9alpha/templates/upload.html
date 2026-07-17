@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="greeting">上传头像</h3>
+
+{% if error %}
+<div class="error-msg">{{ error }}</div>
+{% endif %}
+
+{% if success %}
+<div class="card" style="text-align: center;">
+    <h2 class="card-title">头像上传成功！</h2>
+    <div class="avatar-preview" style="margin: 20px auto;">
+        <img src="{{ image_url }}" alt="头像预览"
+             style="max-width: 200px; max-height: 200px; border-radius: 8px;
+                    border: 2px solid #ddd; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    </div>
+    <p class="info-text">
+        头像链接：
+        <a href="{{ image_url }}" target="_blank" style="word-break: break-all;">{{ image_url }}</a>
+    </p>
+    <div class="action-buttons" style="margin-top: 20px;">
+        <a class="btn" href="{{ url_for('upload_avatar') }}">继续上传</a>
+        <a class="btn btn-secondary" href="{{ url_for('index') }}">返回首页</a>
+    </div>
+</div>
+{% endif %}
+
+{% if not success %}
+<div class="card">
+    <h2 class="card-title">{{ username|default(current_username, true) }}，请选择要上传的头像</h2>
+    <form method="POST" action="{{ url_for('upload_avatar') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label class="form-label">选择图片文件（支持 jpg、jpeg、png、gif、webp）</label>
+            <input class="form-input" type="file" name="avatar" accept=".jpg,.jpeg,.png,.gif,.webp" required>
+        </div>
+        <button class="btn" type="submit">上传头像</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

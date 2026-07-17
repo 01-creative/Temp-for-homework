@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self';">
+    <title>用户管理系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a class="nav-brand" href="/">用户管理系统</a>
+        </div>
+        <div class="nav-right">
+            {% if current_username %}
+                <span class="nav-welcome">欢迎，{{ current_username }}</span>
+                <a class="nav-link" href="{{ url_for('profile') }}">个人中心</a>
+                <a class="nav-link" href="{{ url_for('xml_import') }}">XML导入</a>
+                <a class="nav-link" href="{{ url_for('ping') }}">Ping测试</a>
+                <a class="nav-link" href="{{ url_for('upload_avatar') }}">上传头像</a>
+                {# 黑盒修复6：退出改为POST表单 + CSRF，防止Logout CSRF #}
+                <form method="POST" action="{{ url_for('logout') }}" class="logout-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="nav-link nav-btn-link">退出</button>
+                </form>
+            {% else %}
+                <a class="nav-link" href="{{ url_for('login') }}">登录</a>
+                <a class="nav-link" href="{{ url_for('register') }}">注册</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

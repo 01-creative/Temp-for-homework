@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+
+{# 功能3：时间问候语 #}
+<h3 class="greeting">{{ greeting }}，{{ user.username }}！</h3>
+
+{% if user.avatar %}
+<div class="card" style="text-align:center;padding:16px;">
+    <h2 class="card-title">当前头像</h2>
+    <img src="{{ url_for('static', filename='uploads/' + user.avatar) }}"
+         alt="头像" style="width:150px;height:150px;border-radius:50%;object-fit:cover;border:3px solid #667eea;">
+    <p style="margin-top:8px;"><a href="{{ url_for('upload_avatar') }}" class="btn btn-secondary">更换头像</a></p>
+</div>
+{% endif %}
+
+{# ======== 个人信息展示与编辑 ======== #}
+<div class="card">
+    <h2 class="card-title">个人信息</h2>
+
+    {% if info_error %}
+    <div class="error-msg">{{ info_error }}</div>
+    {% endif %}
+    {% if info_success %}
+    <div class="success-msg">{{ info_success }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('profile') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="action" value="update_info">
+        <div class="form-group">
+            <label class="form-label">UID</label>
+            <input class="form-input" type="text" value="{{ user.uid }}" disabled>
+            <span class="form-note">UID 不可修改</span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">用户名</label>
+            <input class="form-input" type="text" name="username" value="{{ user.username }}"
+                   required maxlength="50" autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label class="form-label">角色</label>
+            <input class="form-input" type="text" value="{{ user.role }}" disabled>
+        </div>
+        <div class="form-group">
+            <label class="form-label">邮箱</label>
+            <input class="form-input" type="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">手机</label>
+            <input class="form-input" type="text" name="phone" value="{{ user.phone }}" required minlength="11">
+        </div>
+        <div class="form-group">
+            <label class="form-label">余额</label>
+            <input class="form-input" type="text" value="{{ user.balance }}" disabled>
+        </div>
+        <div class="action-buttons">
+            <button class="btn" type="submit">保存修改</button>
+            <a class="btn btn-secondary" href="{{ url_for('index') }}">返回首页</a>
+        </div>
+    </form>
+</div>
+
+{# ======== 修改密码（需验证原密码）======== #}
+<div class="card">
+    <h2 class="card-title">修改密码</h2>
+
+    {% if pwd_error %}
+    <div class="error-msg">{{ pwd_error }}</div>
+    {% endif %}
+    {% if pwd_success %}
+    <div class="success-msg">{{ pwd_success }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('profile') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="action" value="change_password">
+        <div class="form-group">
+            <label class="form-label">原密码</label>
+            <input class="form-input" type="password" name="old_password"
+                   placeholder="请输入当前密码" required autocomplete="current-password">
+        </div>
+        <div class="form-group">
+            <label class="form-label">新密码</label>
+            <input class="form-input" type="password" name="new_password"
+                   placeholder="请输入新密码" required minlength="8" maxlength="128" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+            <label class="form-label">确认新密码</label>
+            <input class="form-input" type="password" name="confirm_password"
+                   placeholder="请再次输入新密码" required minlength="8" maxlength="128" autocomplete="new-password">
+        </div>
+        <p class="password-hint">密码要求：不少于8位，包含大写字母、小写字母、数字和特殊字符</p>
+        <button class="btn" type="submit">修改密码</button>
+    </form>
+</div>
+
+{# ======== 余额充值 ======== #}
+<div class="card">
+    <h2 class="card-title">余额充值</h2>
+
+    {% if recharge_error %}
+    <div class="error-msg">{{ recharge_error }}</div>
+    {% endif %}
+    {% if recharge_success %}
+    <div class="success-msg">{{ recharge_success }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('recharge') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <label class="form-label">充值金额</label>
+            <input class="form-input" type="number" name="amount"
+                   placeholder="请输入充值金额（最多 100000）"
+                   min="0.01" max="100000" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">当前余额</label>
+            <input class="form-input" type="text" value="{{ user.balance }}" disabled>
+        </div>
+        <button class="btn" type="submit">立即充值</button>
+    </form>
+</div>
+
+{% endblock %}

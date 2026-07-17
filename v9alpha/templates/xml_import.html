@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>XML 数据导入</h2>
+<p class="subtitle">粘贴 XML 数据以导入用户信息</p>
+
+{% if error %}
+<div class="error-alert">{{ error }}</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('xml_import') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="form-group">
+        <label for="xml_data">XML 数据：</label>
+        <textarea id="xml_data" name="xml_data" rows="20" class="xml-textarea" placeholder="在此粘贴 XML 数据..."></textarea>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">导入</button>
+    </div>
+</form>
+
+{% if result %}
+<h3>导入结果：</h3>
+<pre class="result-pre">{{ result }}</pre>
+{% endif %}
+{% endblock %}

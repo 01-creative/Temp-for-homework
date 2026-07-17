@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if username %}
+{# 功能3：根据系统时间显示问候语 #}
+<h3 class="greeting">{{ greeting }}，{{ username }}！</h3>
+
+<div class="card">
+    <h2 class="card-title">欢迎回来，{{ username }}！</h2>
+
+    {% if user.avatar %}
+    <div style="text-align:center;margin-bottom:16px;">
+        <img src="{{ url_for('static', filename='uploads/' + user.avatar) }}"
+             alt="头像" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #667eea;">
+    </div>
+    {% endif %}
+
+    <ul class="user-info-list">
+        <li><strong>UID：</strong>{{ user.uid }}</li>
+        <li><strong>用户名：</strong>{{ user.username }}</li>
+        <li><strong>邮箱：</strong>{{ user.email }}</li>
+        <li><strong>手机：</strong>{{ user.phone }}</li>
+        <li><strong>角色：</strong>{{ user.role }}</li>
+        <li><strong>余额：</strong>{{ user.balance }}</li>
+    </ul>
+
+    <div class="action-buttons">
+        <a class="btn" href="{{ url_for('profile') }}">个人中心</a>
+        <a class="btn btn-secondary" href="{{ url_for('upload_avatar') }}">上传头像</a>
+        <a class="btn btn-secondary" href="{{ url_for('ping') }}">Ping测试</a>
+        <a class="btn btn-secondary" href="/page?name=help">帮助中心</a>
+        <form method="POST" action="{{ url_for('logout') }}" style="display:inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="btn btn-secondary">退出登录</button>
+        </form>
+    </div>
+</div>
+
+
+{# ======== 用户搜索功能 ======== #}
+<div class="card">
+    <h2 class="card-title">用户搜索</h2>
+    <form method="GET" action="{{ url_for('search') }}">
+        <div class="form-group">
+            <input class="form-input" type="text" name="keyword"
+                   placeholder="输入用户名或邮箱关键字搜索"
+                   value="{{ keyword }}" maxlength="100">
+        </div>
+        <button class="btn" type="submit">搜索</button>
+    </form>
+
+    {% if search_performed %}
+    <div class="search-results">
+        {% if search_results %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>UID</th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>手机</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in search_results %}
+                <tr>
+                    <td>{{ row.uid }}</td>
+                    <td>{{ row.username }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="info-text" style="text-align: center;">无搜索结果</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+{# ======== URL 安全获取 ======== #}
+<div class="card">
+    <h2 class="card-title">URL 获取</h2>
+    <form method="POST" action="{{ url_for('fetch_url') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-group">
+            <input class="form-input" type="text" name="url"
+                   placeholder="输入 http/https 网址"
+                   value="{{ url_original if url_original else '' }}" maxlength="2000">
+        </div>
+        <button class="btn" type="submit">获取</button>
+    </form>
+
+    {% if url_error %}
+    <div class="error-msg" style="margin-top:16px;">
+        {{ url_error }}
+    </div>
+    {% endif %}
+
+    {% if url_result %}
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid #eee;">
+        <h3 style="margin-bottom:12px; color:#333;">获取结果</h3>
+        <div style="margin-bottom:8px;">
+            <strong>状态码：</strong>
+            <span style="color:#333;">{{ url_status }}</span>
+        </div>
+        <div style="margin-bottom:8px;">
+            <strong>Content-Type：</strong>
+            <span style="color:#333;">{{ url_content_type }}</span>
+        </div>
+        <div style="margin-bottom:8px;">
+            <strong>内容预览（前 {{ url_content|length }} 字符）：</strong>
+        </div>
+        <pre style="background:#f5f5f5; padding:12px; border-radius:6px; font-size:13px;
+                    max-height:400px; overflow:auto; white-space:pre-wrap; word-break:break-all;
+                    color:#333;">{{ url_content }}</pre>
+    </div>
+    {% endif %}
+</div>
+
+{% else %}
+{# ======== 未登录 ======== #}
+<div class="card">
+    <h2 class="card-title">请先登录</h2>
+    <p class="info-text">您还未登录，请点击下方按钮前往登录页面。</p>
+    <a class="btn" href="{{ url_for('login') }}">前往登录</a>
+</div>
+{% endif %}
+
+{% endblock %}
